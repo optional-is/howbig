@@ -7,8 +7,11 @@ import flask_config
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app = flask.Flask(__name__)
+
+# See http://blog.y3xz.com/blog/2012/08/16/flask-and-postgresql-on-heroku/ for how to use postgres on Heroku
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
+
 app.static_folder = "templates"
 app.SEND_FILE_MAX_AGE_DEFAULT = 0
 
@@ -20,11 +23,23 @@ def examples():
 	return file('templates/example.html').read()
 
 
-@app.route('/size-of/<shape_file>')
+@app.route('/dimension/<shape_file>')
 def dimension():
 	"""Returns a details page about the shape file"""
 
 	return file('templates/detail.html').read()
+
+@app.route('/category/<tag>')
+def dimension():
+	"""Returns a list page of all the shape files that match the category"""
+
+	return file('templates/list.html').read()
+
+@app.route('/category')
+def dimension():
+	"""Returns a list page of all the categories/tags"""
+
+	return file('templates/list.html').read()
 
 
 @app.route('/')
